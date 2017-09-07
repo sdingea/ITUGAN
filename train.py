@@ -22,7 +22,11 @@ def main():
 	'''
 	x_train = load_fashion_mnist(FASHION_MNIST_PATH, N_SAMPLE)
 	x_noise = load_noise(N_SAMPLE, NOISE_SZ)
-	#save_image('images/samples/', x_train, 'source', -1)
+	x_origin = np.copy(x_train)
+	for i in range(12):
+		save_image('images/samples/', x_origin, 'source', -1 - i)
+		x_origin = x_origin[12:]
+	del(x_origin)
 	
 	'''
 	construct the model
