@@ -13,18 +13,18 @@ DECAY_THRESHOLD = 100
 LR = 0.0002
 EDGE = 28
 NOISE_SZ = 100 
-BLUR_MATRIX = get_blur_matrix(0.1, EDGE)
+BLUR_MATRIX = get_blur_matrix(0.333333, EDGE)
 FASHION_MNIST_PATH = '../data/fashion'
 
 def main():
 	'''
 	initialize data & save one original picture
 	'''
-	x_train = load_fashion_mnist(FASHION_MNIST_PATH, N_SAMPLE)
+	x_train = load_fashion_mnist(FASHION_MNIST_PATH, N_SAMPLE, preprocess = 1, matrix = BLUR_MATRIX)
 	x_noise = load_noise(N_SAMPLE, NOISE_SZ)
 	x_origin = np.copy(x_train)
 	for i in range(12):
-		save_image('images/samples/', x_origin, 'source', -1 - i)
+		save_image('images/samples_after_0.333333_blur/', x_origin, 'source', -1 - i)
 		x_origin = x_origin[12:]
 	del(x_origin)
 	

@@ -22,18 +22,14 @@ def load_mnist(n, preprocess = 0, matrix = np.zeros((28, 28))):
 
 def helper(path):  
 	with gzip.open(os.path.join(path, 'train-images-idx3-ubyte.gz'), 'rb') as f:
-		x_train = np.frombuffer(f.read(), dtype = np.uint8, offset = 16).reshape(60000, 28, 28)
-	with gzip.open(os.path.join(path, 'train-labels-idx1-ubyte.gz'), 'rb') as f:
-		y_train = np.frombuffer(f.read(), dtype = np.uint8, offset = 8)
-	with gzip.open(os.path.join(path, 't10k-images-idx3-ubyte.gz'), 'rb') as f:
-		x_test = np.frombuffer(f.read(), dtype = np.uint8, offset = 16).reshape(10000, 28, 28)
-	with gzip.open(os.path.join(path, 't10k-labels-idx1-ubyte.gz'), 'rb') as f:
-		y_test = np.frombuffer(f.read(), dtype = np.uint8, offset = 8)
-	return (x_train, y_train), (x_test, y_test)
+		x_origin = np.frombuffer(f.read(), dtype = np.uint8, offset = 16).reshape(60000, 28, 28)
+	return x_origin
 
 def load_fashion_mnist(path, n, preprocess = 0, matrix = np.zeros((28, 28))):
-	(x_train, y_train), (x_test, y_test) = helper(path)
-	x_train = x_train[:n, :, :]
+	x_origin = helper(path)
+	x_origin = x_origin[:n, :, :]
+	x_train = np.copy(x_origin) # the original x_origin[i] is read-only
+	del(x_origin)
 	if preprocess:
 		for i in range(n):
 			x_train[i] = np.dot(np.dot(matrix, x_train[i]), matrix.T)
