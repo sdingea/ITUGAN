@@ -47,7 +47,7 @@ def main(path):
 	'''
 	res = []
 	for png in [f for f in os.listdir(path) if f[-4:] == '.png']:
-		for i in cut(np.asarray(Image.open(png).convert('L'))):
+		for i in cut(np.asarray(Image.open(os.path.join(path, png)).convert('L'))):
 			for j in i:
 				res.append(np.sum(ave(ave(j))) / (RN_PIXEL * CN_PIXEL))
 	with open('res.csv', 'wb') as f:
